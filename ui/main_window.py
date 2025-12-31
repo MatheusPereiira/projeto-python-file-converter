@@ -40,29 +40,52 @@ class ConverterWorker(QThread):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("File Converter")
-        self.resize(600, 520)
+        self.setWindowTitle("Conversor de Arquivos")
+        self.resize(620, 540)
         self.file_path: str | None = None
+
+        # Drag & Drop habilitado
+        self.setAcceptDrops(True)
 
         self._build_ui()
         self._apply_styles()
+
+    
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dropEvent(self, event):
+        urls = event.mimeData().urls()
+        if not urls:
+            return
+
+        file_path = urls[0].toLocalFile()
+        if not file_path:
+            return
+
+        self.file_path = file_path
+        self.file_label.setText(file_path)
+        self.log_area.append(f"Arquivo recebido por drag & drop: {file_path}")
+        logger.info("Arquivo recebido por drag & drop: %s", file_path)
+
+    
 
     def _build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
 
         main_layout = QVBoxLayout()
-        main_layout.setSpacing(16)
+        main_layout.setSpacing(18)
         main_layout.setContentsMargins(24, 24, 24, 24)
 
         
         title = QLabel("Conversor de Arquivos")
         title.setObjectName("title")
 
-
         main_layout.addWidget(title)
-    
-
+        
         divider = QFrame()
         divider.setFrameShape(QFrame.Shape.HLine)
         main_layout.addWidget(divider)
@@ -75,14 +98,14 @@ class MainWindow(QMainWindow):
         file_title = QLabel("Arquivo de entrada")
         file_title.setObjectName("sectionTitle")
 
-        self.file_label = QLabel("Nenhum arquivo selecionado")
+        self.file_label = QLabel("Arraste o arquivo aqui")
         self.file_label.setObjectName("fileLabel")
-        self.file_label.setToolTip(
-            "Arquivo que será convertido para o formato escolhido"
-        )
+        self.file_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.file_label.setToolTip("Área para arrastar e soltar o arquivo")
 
         btn_select = QPushButton("Selecionar Arquivo")
-        btn_select.setToolTip("Clique para escolher o arquivo de origem")
+        btn_select.setObjectName("secondaryButton")
+        btn_select.setToolTip("Selecionar arquivo manualmente")
         btn_select.clicked.connect(self.select_file)
 
         file_layout.addWidget(file_title)
@@ -101,14 +124,10 @@ class MainWindow(QMainWindow):
 
         format_layout = QHBoxLayout()
         format_label = QLabel("Formato de saída:")
-        format_label.setToolTip("Escolha o formato final do arquivo")
 
         self.format_combo = QComboBox()
         self.format_combo.addItems(
             ["DOCX", "JPEG", "PNG", "PDF_DOCX", "PDF_IMAGES"]
-        )
-        self.format_combo.setToolTip(
-            "Define para qual formato o arquivo será convertido"
         )
 
         format_layout.addWidget(format_label)
@@ -116,7 +135,6 @@ class MainWindow(QMainWindow):
 
         self.convert_btn = QPushButton("Converter")
         self.convert_btn.setObjectName("primaryButton")
-        self.convert_btn.setToolTip("Inicia o processo de conversão")
         self.convert_btn.clicked.connect(self.start_conversion)
 
         config_layout.addWidget(config_title)
@@ -125,14 +143,13 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(config_card)
 
-       
+        
         self.progress = QProgressBar()
         self.progress.setRange(0, 0)
-        self.progress.setToolTip("Progresso da conversão")
         self.progress.hide()
         main_layout.addWidget(self.progress)
 
-        
+       
         status_card = QFrame()
         status_card.setObjectName("card")
         status_layout = QVBoxLayout(status_card)
@@ -142,9 +159,6 @@ class MainWindow(QMainWindow):
 
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True)
-        self.log_area.setToolTip(
-            "Aqui são exibidas informações e mensagens da conversão"
-        )
 
         status_layout.addWidget(status_title)
         status_layout.addWidget(self.log_area)
@@ -153,68 +167,82 @@ class MainWindow(QMainWindow):
 
         central.setLayout(main_layout)
 
+    
+
     def _apply_styles(self):
         self.setStyleSheet(
-            """
-            QWidget {
-                font-family: Segoe UI;
-                font-size: 13px;
-            }
+        """
+        QWidget {
+            font-family: Segoe UI;
+            font-size: 13px;
+        }
 
-            QLabel#title {
-                font-size: 24px;
-                font-weight: bold;
-            }
+        QLabel#title {
+            font-size: 26px;
+            font-weight: bold;
+        }
 
-            QLabel#subtitle {
-                color: #666;
-                margin-bottom: 12px;
-            }
+        QLabel#subtitle {
+            color: #666;
+            margin-bottom: 14px;
+        }
 
-            QLabel#sectionTitle {
-                font-weight: bold;
-                margin-bottom: 6px;
-            }
+        QLabel#sectionTitle {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
 
-            QFrame#card {
-                background-color: #fafafa;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                padding: 12px;
-            }
+        QFrame#card {
+            background-color: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 14px;
+        }
 
-            QLabel#fileLabel {
-                color: #333;
-                padding: 8px;
-                border: 1px dashed #bbb;
-                border-radius: 6px;
-                background-color: #fff;
-            }
+        QLabel#fileLabel {
+            padding: 22px;
+            border: 2px dashed #2563eb;
+            border-radius: 10px;
+            background-color: #ffffff;
+            color: #333;
+        }
 
-            QPushButton {
-                padding: 8px;
-                border-radius: 6px;
-            }
+        QPushButton {
+            padding: 10px;
+            border-radius: 8px;
+        }
 
-            QPushButton:hover {
-                background-color: #f0f0f0;
-            }
+        /* BOTÃO PRINCIPAL */
+        QPushButton#primaryButton {
+            background-color: #2563eb;
+            color: white;
+            font-weight: bold;
+        }
 
-            QPushButton#primaryButton {
-                background-color: #2563eb;
-                color: white;
-                font-weight: bold;
-            }
+        QPushButton#primaryButton:pressed {
+            background-color: #1e40af;
+        }
 
-            QPushButton#primaryButton:hover {
-                background-color: #1e40af;
-            }
+        
+        QPushButton#secondaryButton {
+            background-color: #2563eb;
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
 
-            QTextEdit {
-                border-radius: 6px;
-            }
-            """
-        )
+        QPushButton#secondaryButton:pressed {
+            background-color: #1e40af;
+        }
+
+        QTextEdit {
+            border-radius: 8px;
+        }
+        """
+    )
+
+
+    
 
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -228,7 +256,7 @@ class MainWindow(QMainWindow):
     def start_conversion(self):
         if not self.file_path:
             QMessageBox.warning(
-                self, "Atenção", "Selecione um arquivo para converter."
+                self, "Atenção", "Selecione ou arraste um arquivo."
             )
             return
 
