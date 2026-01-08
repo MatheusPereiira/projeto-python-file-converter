@@ -47,28 +47,28 @@ class MainWindow(QMainWindow):
         self.resize(620, 560)
 
         self.file_path: str | None = None
-        self.last_output_dir: Path | None = None  # 👈 NOVO
+        self.last_output_dir: Path | None = None
 
-        # Drag & Drop
         self.setAcceptDrops(True)
 
         self._build_ui()
-        self._apply_styles()
 
-    # UTIL 
+    # =========================
+    # UTIL
+    # =========================
+    def _format_file_size(self, file_path: str) -> str:
+        size = os.path.getsize(file_path)
 
-    def _get_file_size(self, file_path: str) -> str:
-        size_bytes = os.path.getsize(file_path)
-
-        if size_bytes < 1024:
-            return f"{size_bytes} B"
-        elif size_bytes < 1024 * 1024:
-            return f"{size_bytes / 1024:.2f} KB"
+        if size < 1024:
+            return f"{size} B"
+        elif size < 1024 * 1024:
+            return f"{size / 1024:.2f} KB"
         else:
-            return f"{size_bytes / (1024 * 1024):.2f} MB"
+            return f"{size / (1024 * 1024):.2f} MB"
 
-    #  DRAG & DROP 
-
+    # =========================
+    # DRAG & DROP
+    # =========================
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
             event.acceptProposedAction()
@@ -82,111 +82,97 @@ class MainWindow(QMainWindow):
         if not file_path:
             return
 
-        self.file_path = file_path
-        file_size = self._get_file_size(file_path)
+        self._set_selected_file(file_path)
+        self.log_area.append(f"Arquivo recebido por drag & drop: {file_path}")
 
-        self.file_label.setText(
-            f"{Path(file_path).name} ({file_size})"
-        )
-        self.log_area.append(
-            f"Arquivo recebido por drag & drop: {file_path} ({file_size})"
-        )
-        logger.info("Arquivo recebido por drag & drop: %s", file_path)
-
-    # UI 
-
+    # =========================
+    # UI
+    # =========================
     def _build_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
 
-        main_layout = QVBoxLayout()
-        main_layout.setSpacing(18)
-        main_layout.setContentsMargins(24, 24, 24, 24)
+        layout = QVBoxLayout(central)
+        layout.setSpacing(16)
 
         title = QLabel("Conversor de Arquivos")
-        title.setObjectName("title")
+        title.setStyleSheet("font-size:26px;font-weight:bold;")
+        layout.addWidget(title)
 
         subtitle = QLabel(
             "Arraste um arquivo ou selecione manualmente para converter"
         )
-        subtitle.setObjectName("subtitle")
+        layout.addWidget(subtitle)
 
-        main_layout.addWidget(title)
-        main_layout.addWidget(subtitle)
+        layout.addWidget(QFrame(frameShape=QFrame.Shape.HLine))
 
-        divider = QFrame()
-        divider.setFrameShape(QFrame.Shape.HLine)
-        main_layout.addWidget(divider)
-
-        # Arquivo 
-        file_card = QFrame()
-        file_card.setObjectName("card")
-        file_layout = QVBoxLayout(file_card)
+        # -------- Arquivo --------
+        file_box = QFrame()
+        file_box.setFrameShape(QFrame.Shape.StyledPanel)
+        file_layout = QVBoxLayout(file_box)
 
         file_title = QLabel("Arquivo de entrada")
-        file_title.setObjectName("sectionTitle")
+        file_title.setStyleSheet("font-weight:bold;")
 
         self.file_label = QLabel("Arraste o arquivo aqui")
-        self.file_label.setObjectName("fileLabel")
         self.file_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.file_label.setStyleSheet(
+            "border:2px dashed #2563eb;"
+            "padding:20px;"
+            "border-radius:8px;"
+        )
 
         btn_select = QPushButton("Selecionar Arquivo")
-        btn_select.setObjectName("secondaryButton")
         btn_select.clicked.connect(self.select_file)
+        btn_select.setStyleSheet(
+            "background:#2563eb;color:white;padding:10px;border-radius:8px;"
+        )
 
         file_layout.addWidget(file_title)
         file_layout.addWidget(self.file_label)
         file_layout.addWidget(btn_select)
 
-        main_layout.addWidget(file_card)
+        layout.addWidget(file_box)
 
-        # Configuração
-        config_card = QFrame()
-        config_card.setObjectName("card")
-        config_layout = QVBoxLayout(config_card)
+        # -------- Configuração --------
+        config_box = QFrame()
+        config_layout = QVBoxLayout(config_box)
 
         config_title = QLabel("Configuração da conversão")
-        config_title.setObjectName("sectionTitle")
+        config_title.setStyleSheet("font-weight:bold;")
 
         format_layout = QHBoxLayout()
-        format_label = QLabel("Formato de saída:")
+        format_layout.addWidget(QLabel("Formato de saída:"))
 
         self.format_combo = QComboBox()
-        self.format_combo.addItems(["DOCX", "JPEG", "PNG", "PDF"])
-
-        format_layout.addWidget(format_label)
+        self.format_combo.addItems(["DOCX", "PDF", "PNG", "JPEG"])
         format_layout.addWidget(self.format_combo)
 
         self.convert_btn = QPushButton("Converter")
-        self.convert_btn.setObjectName("primaryButton")
         self.convert_btn.clicked.connect(self.start_conversion)
+        self.convert_btn.setStyleSheet(
+            "background:#2563eb;color:white;padding:10px;border-radius:8px;"
+        )
 
-        # NOVO BOTÃO
         self.open_output_btn = QPushButton("Abrir pasta de saída")
-        self.open_output_btn.setObjectName("secondaryButton")
-        self.open_output_btn.setEnabled(False)
         self.open_output_btn.clicked.connect(self.open_output_folder)
+        self.open_output_btn.setStyleSheet(
+            "background:#2563eb;color:white;padding:10px;border-radius:8px;"
+        )
 
         config_layout.addWidget(config_title)
         config_layout.addLayout(format_layout)
         config_layout.addWidget(self.convert_btn)
         config_layout.addWidget(self.open_output_btn)
 
-        main_layout.addWidget(config_card)
+        layout.addWidget(config_box)
 
-        # Progresso 
-        self.progress = QProgressBar()
-        self.progress.setRange(0, 0)
-        self.progress.hide()
-        main_layout.addWidget(self.progress)
-
-        # Status
-        status_card = QFrame()
-        status_card.setObjectName("card")
-        status_layout = QVBoxLayout(status_card)
+        # -------- Status --------
+        status_box = QFrame()
+        status_layout = QVBoxLayout(status_box)
 
         status_title = QLabel("Status da conversão")
-        status_title.setObjectName("sectionTitle")
+        status_title.setStyleSheet("font-weight:bold;")
 
         self.log_area = QTextEdit()
         self.log_area.setReadOnly(True)
@@ -194,114 +180,48 @@ class MainWindow(QMainWindow):
         status_layout.addWidget(status_title)
         status_layout.addWidget(self.log_area)
 
-        main_layout.addWidget(status_card)
+        layout.addWidget(status_box)
 
-        central.setLayout(main_layout)
+        # -------- Progresso --------
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 0)
+        self.progress.hide()
+        layout.addWidget(self.progress)
 
-    # STYLE 
-
-    def _apply_styles(self):
-        self.setStyleSheet(
-            """
-            QWidget {
-                font-family: Segoe UI;
-                font-size: 13px;
-            }
-
-            QLabel#title {
-                font-size: 26px;
-                font-weight: bold;
-            }
-
-            QLabel#subtitle {
-                color: #666;
-                margin-bottom: 14px;
-            }
-
-            QLabel#sectionTitle {
-                font-weight: bold;
-                margin-bottom: 6px;
-            }
-
-            QFrame#card {
-                background-color: #fafafa;
-                border: 1px solid #ddd;
-                border-radius: 12px;
-                padding: 14px;
-            }
-
-            QLabel#fileLabel {
-                padding: 22px;
-                border: 2px dashed #2563eb;
-                border-radius: 10px;
-                background-color: #ffffff;
-                color: #333;
-            }
-
-            QPushButton {
-                padding: 10px;
-                border-radius: 8px;
-            }
-
-            QPushButton#primaryButton {
-                background-color: #2563eb;
-                color: white;
-                font-weight: bold;
-            }
-
-            QPushButton#primaryButton:pressed {
-                background-color: #1e40af;
-            }
-
-            QPushButton#secondaryButton {
-                background-color: #2563eb;
-                color: white;
-                font-weight: bold;
-                border: none;
-            }
-
-            QPushButton#secondaryButton:pressed {
-                background-color: #1e40af;
-            }
-
-            QTextEdit {
-                border-radius: 8px;
-            }
-            """
-        )
-
+    # =========================
     # AÇÕES
+    # =========================
+    def _set_selected_file(self, file_path: str):
+        self.file_path = file_path
+        size = self._format_file_size(file_path)
+        name = Path(file_path).name
+
+        self.file_label.setText(f"{name} ({size})")
 
     def select_file(self):
-        file_path, _ = QFileDialog.getOpenFileName(
-            self, "Selecionar arquivo"
-        )
+        file_path, _ = QFileDialog.getOpenFileName(self, "Selecionar arquivo")
         if file_path:
-            self.file_path = file_path
-            file_size = self._get_file_size(file_path)
-
-            self.file_label.setText(
-                f"{Path(file_path).name} ({file_size})"
-            )
-            self.log_area.append(
-                f"Arquivo selecionado: {file_path} ({file_size})"
-            )
+            self._set_selected_file(file_path)
+            self.log_area.append(f"Arquivo selecionado: {file_path}")
 
     def start_conversion(self):
         if not self.file_path:
             QMessageBox.warning(
-                self, "Atenção", "Selecione ou arraste um arquivo."
+                self,
+                "Atenção",
+                "Selecione ou arraste um arquivo."
             )
             return
 
         self.log_area.clear()
         self.log_area.append("Iniciando nova conversão...\n")
 
-        self.convert_btn.setEnabled(False)
         self.progress.show()
+        self.convert_btn.setEnabled(False)
 
         self.worker = ConverterWorker(
-            self.file_path, self.format_combo.currentText()
+            self.file_path,
+            self.format_combo.currentText()
         )
         self.worker.finished.connect(self.on_success)
         self.worker.error.connect(self.on_error)
@@ -312,10 +232,7 @@ class MainWindow(QMainWindow):
         self.convert_btn.setEnabled(True)
 
         output_file = Path(result_path)
-        output_dir = output_file.parent
-
-        self.last_output_dir = output_dir
-        self.open_output_btn.setEnabled(True)
+        self.last_output_dir = output_file.parent
 
         self.log_area.append(f"Conversão concluída: {output_file}")
         logger.info("Arquivo convertido com sucesso: %s", output_file)
@@ -323,27 +240,27 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "Sucesso",
-            "Conversão realizada com sucesso!\nA pasta de saída será aberta."
+            "Conversão realizada com sucesso!"
         )
 
-        try:
-            os.startfile(str(output_dir))
-        except Exception as exc:
-            logger.warning(
-                "Não foi possível abrir a pasta de saída: %s", exc
-            )
-
     def open_output_folder(self):
-        if self.last_output_dir and self.last_output_dir.exists():
-            try:
-                os.startfile(str(self.last_output_dir))
-            except Exception as exc:
-                QMessageBox.warning(
-                    self,
-                    "Erro",
-                    "Não foi possível abrir a pasta de saída."
-                )
-                logger.warning("Erro ao abrir pasta de saída: %s", exc)
+        if not self.last_output_dir:
+            QMessageBox.information(
+                self,
+                "Aviso",
+                "Nenhuma conversão foi realizada ainda."
+            )
+            return
+
+        if not self.last_output_dir.exists():
+            QMessageBox.warning(
+                self,
+                "Erro",
+                "A pasta de saída não foi encontrada."
+            )
+            return
+
+        os.startfile(str(self.last_output_dir))
 
     def on_error(self, error_message: str):
         self.progress.hide()
