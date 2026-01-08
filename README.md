@@ -8,7 +8,8 @@ Aplicação desktop desenvolvida em **Python + PyQt6** para conversão de arquiv
 - Conversão entre formatos de documentos e imagens
 - Interface gráfica limpa e profissional
 - Execução de conversões em background (QThread)
-- Logs de status e tratamento de erros
+- Logs de status
+- Tratamento de erros
 
 ## 🛠️ Tecnologias utilizadas
 
