@@ -48,13 +48,25 @@ class MainWindow(QMainWindow):
 
         self.file_path: str | None = None
 
-       
+        # Drag & Drop
         self.setAcceptDrops(True)
 
         self._build_ui()
         self._apply_styles()
 
-    
+    # UTIL 
+
+    def _get_file_size(self, file_path: str) -> str:
+        size_bytes = os.path.getsize(file_path)
+
+        if size_bytes < 1024:
+            return f"{size_bytes} B"
+        elif size_bytes < 1024 * 1024:
+            return f"{size_bytes / 1024:.2f} KB"
+        else:
+            return f"{size_bytes / (1024 * 1024):.2f} MB"
+
+    # DRAG & DROP
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -70,11 +82,17 @@ class MainWindow(QMainWindow):
             return
 
         self.file_path = file_path
-        self.file_label.setText(file_path)
-        self.log_area.append(f"Arquivo recebido por drag & drop: {file_path}")
+        file_size = self._get_file_size(file_path)
+
+        self.file_label.setText(
+            f"{Path(file_path).name} ({file_size})"
+        )
+        self.log_area.append(
+            f"Arquivo recebido por drag & drop: {file_path} ({file_size})"
+        )
         logger.info("Arquivo recebido por drag & drop: %s", file_path)
 
-   
+    # UI 
 
     def _build_ui(self):
         central = QWidget()
@@ -99,7 +117,7 @@ class MainWindow(QMainWindow):
         divider.setFrameShape(QFrame.Shape.HLine)
         main_layout.addWidget(divider)
 
-       
+        # Arquivo
         file_card = QFrame()
         file_card.setObjectName("card")
         file_layout = QVBoxLayout(file_card)
@@ -121,7 +139,7 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(file_card)
 
-        
+        # Configuração
         config_card = QFrame()
         config_card.setObjectName("card")
         config_layout = QVBoxLayout(config_card)
@@ -133,9 +151,7 @@ class MainWindow(QMainWindow):
         format_label = QLabel("Formato de saída:")
 
         self.format_combo = QComboBox()
-        self.format_combo.addItems(
-            ["DOCX", "JPEG", "PNG", "PDF"]
-        )
+        self.format_combo.addItems(["DOCX", "JPEG", "PNG", "PDF"])
 
         format_layout.addWidget(format_label)
         format_layout.addWidget(self.format_combo)
@@ -150,13 +166,13 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(config_card)
 
-        
+        #Progresso 
         self.progress = QProgressBar()
         self.progress.setRange(0, 0)
         self.progress.hide()
         main_layout.addWidget(self.progress)
 
-        
+        #Status
         status_card = QFrame()
         status_card.setObjectName("card")
         status_layout = QVBoxLayout(status_card)
@@ -174,6 +190,7 @@ class MainWindow(QMainWindow):
 
         central.setLayout(main_layout)
 
+    # Style
 
     def _apply_styles(self):
         self.setStyleSheet(
@@ -245,6 +262,7 @@ class MainWindow(QMainWindow):
             """
         )
 
+    # açoes
 
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -252,8 +270,14 @@ class MainWindow(QMainWindow):
         )
         if file_path:
             self.file_path = file_path
-            self.file_label.setText(file_path)
-            self.log_area.append(f"Arquivo selecionado: {file_path}")
+            file_size = self._get_file_size(file_path)
+
+            self.file_label.setText(
+                f"{Path(file_path).name} ({file_size})"
+            )
+            self.log_area.append(
+                f"Arquivo selecionado: {file_path} ({file_size})"
+            )
 
     def start_conversion(self):
         if not self.file_path:
@@ -262,7 +286,7 @@ class MainWindow(QMainWindow):
             )
             return
 
-        
+        # Limpa status
         self.log_area.clear()
         self.log_area.append("Iniciando nova conversão...\n")
 
