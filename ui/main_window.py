@@ -17,7 +17,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 
-from converters.dispatcher import dispatch
+from converters.dispatcher import dispatch_conversion
 from utils.logger import setup_logger
 
 logger = setup_logger("ui")
@@ -36,7 +36,7 @@ class ConverterWorker(QThread):
 
     def run(self):
         try:
-            result = dispatch(self.file_path, self.output_format)
+            result = dispatch_conversion(self.file_path, self.output_format)
             self.finished.emit(str(result))
         except Exception as exc:
             self.error.emit(str(exc))
