@@ -1,3 +1,6 @@
+from pathlib import Path
+import os
+
 from PyQt6.QtWidgets import (
     QMainWindow,
     QWidget,
@@ -20,6 +23,8 @@ from utils.logger import setup_logger
 logger = setup_logger("ui")
 
 
+
+
 class ConverterWorker(QThread):
     finished = pyqtSignal(str)
     error = pyqtSignal(str)
@@ -37,20 +42,23 @@ class ConverterWorker(QThread):
             self.error.emit(str(exc))
 
 
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Conversor de Arquivos")
         self.resize(620, 540)
+
         self.file_path: str | None = None
 
-        # Drag & Drop habilitado
+        # Habilita Drag & Drop
         self.setAcceptDrops(True)
 
         self._build_ui()
         self._apply_styles()
 
-    
+   
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -84,13 +92,18 @@ class MainWindow(QMainWindow):
         title = QLabel("Conversor de Arquivos")
         title.setObjectName("title")
 
+        subtitle = QLabel(
+            "Arraste um arquivo ou selecione manualmente para converter"
+        )
+        subtitle.setObjectName("subtitle")
+
         main_layout.addWidget(title)
-        
+        main_layout.addWidget(subtitle)
+
         divider = QFrame()
         divider.setFrameShape(QFrame.Shape.HLine)
         main_layout.addWidget(divider)
 
-        
         file_card = QFrame()
         file_card.setObjectName("card")
         file_layout = QVBoxLayout(file_card)
@@ -101,11 +114,9 @@ class MainWindow(QMainWindow):
         self.file_label = QLabel("Arraste o arquivo aqui")
         self.file_label.setObjectName("fileLabel")
         self.file_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.file_label.setToolTip("Área para arrastar e soltar o arquivo")
 
         btn_select = QPushButton("Selecionar Arquivo")
         btn_select.setObjectName("secondaryButton")
-        btn_select.setToolTip("Selecionar arquivo manualmente")
         btn_select.clicked.connect(self.select_file)
 
         file_layout.addWidget(file_title)
@@ -114,7 +125,6 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(file_card)
 
-        
         config_card = QFrame()
         config_card.setObjectName("card")
         config_layout = QVBoxLayout(config_card)
@@ -143,13 +153,11 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(config_card)
 
-        
         self.progress = QProgressBar()
         self.progress.setRange(0, 0)
         self.progress.hide()
         main_layout.addWidget(self.progress)
-
-       
+        
         status_card = QFrame()
         status_card.setObjectName("card")
         status_layout = QVBoxLayout(status_card)
@@ -167,82 +175,79 @@ class MainWindow(QMainWindow):
 
         central.setLayout(main_layout)
 
-    
+   
 
     def _apply_styles(self):
         self.setStyleSheet(
-        """
-        QWidget {
-            font-family: Segoe UI;
-            font-size: 13px;
-        }
+            """
+            QWidget {
+                font-family: Segoe UI;
+                font-size: 13px;
+            }
 
-        QLabel#title {
-            font-size: 26px;
-            font-weight: bold;
-        }
+            QLabel#title {
+                font-size: 26px;
+                font-weight: bold;
+            }
 
-        QLabel#subtitle {
-            color: #666;
-            margin-bottom: 14px;
-        }
+            QLabel#subtitle {
+                color: #666;
+                margin-bottom: 14px;
+            }
 
-        QLabel#sectionTitle {
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
+            QLabel#sectionTitle {
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
 
-        QFrame#card {
-            background-color: #fafafa;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 14px;
-        }
+            QFrame#card {
+                background-color: #fafafa;
+                border: 1px solid #ddd;
+                border-radius: 12px;
+                padding: 14px;
+            }
 
-        QLabel#fileLabel {
-            padding: 22px;
-            border: 2px dashed #2563eb;
-            border-radius: 10px;
-            background-color: #ffffff;
-            color: #333;
-        }
+            QLabel#fileLabel {
+                padding: 22px;
+                border: 2px dashed #2563eb;
+                border-radius: 10px;
+                background-color: #ffffff;
+                color: #333;
+            }
 
-        QPushButton {
-            padding: 10px;
-            border-radius: 8px;
-        }
+            QPushButton {
+                padding: 10px;
+                border-radius: 8px;
+            }
 
-        /* BOTÃO PRINCIPAL */
-        QPushButton#primaryButton {
-            background-color: #2563eb;
-            color: white;
-            font-weight: bold;
-        }
+            QPushButton#primaryButton {
+                background-color: #2563eb;
+                color: white;
+                font-weight: bold;
+            }
 
-        QPushButton#primaryButton:pressed {
-            background-color: #1e40af;
-        }
+            QPushButton#primaryButton:pressed {
+                background-color: #1e40af;
+            }
 
-        
-        QPushButton#secondaryButton {
-            background-color: #2563eb;
-            color: white;
-            font-weight: bold;
-            border: none;
-        }
+            QPushButton#secondaryButton {
+                background-color: #2563eb;
+                color: white;
+                font-weight: bold;
+                border: none;
+            }
 
-        QPushButton#secondaryButton:pressed {
-            background-color: #1e40af;
-        }
+            QPushButton#secondaryButton:pressed {
+                background-color: #1e40af;
+            }
 
-        QTextEdit {
-            border-radius: 8px;
-        }
-        """
-    )
+            QTextEdit {
+                border-radius: 8px;
+            }
+            """
+        )
 
-
-    
+   
 
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -272,12 +277,29 @@ class MainWindow(QMainWindow):
         self.worker.start()
 
     def on_success(self, result_path: str):
+        # UI
         self.progress.hide()
         self.convert_btn.setEnabled(True)
-        self.log_area.append(f"Conversão concluída: {result_path}")
+
+        output_file = Path(result_path)
+        output_dir = output_file.parent
+
+        self.log_area.append(f"Conversão concluída: {output_file}")
+        logger.info("Arquivo convertido com sucesso: %s", output_file)
+
         QMessageBox.information(
-            self, "Sucesso", "Conversão realizada com sucesso!"
+            self,
+            "Sucesso",
+            "Conversão realizada com sucesso!\nA pasta de saída será aberta."
         )
+
+        
+        try:
+            os.startfile(str(output_dir))
+        except Exception as exc:
+            logger.warning(
+                "Não foi possível abrir a pasta de saída: %s", exc
+            )
 
     def on_error(self, error_message: str):
         self.progress.hide()
