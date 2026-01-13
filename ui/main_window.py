@@ -99,11 +99,6 @@ class MainWindow(QMainWindow):
         title.setStyleSheet("font-size:26px;font-weight:bold;")
         layout.addWidget(title)
 
-        subtitle = QLabel(
-            "Arraste um arquivo ou selecione manualmente para converter"
-        )
-        layout.addWidget(subtitle)
-
         layout.addWidget(QFrame(frameShape=QFrame.Shape.HLine))
 
         # -------- Arquivo --------
