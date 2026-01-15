@@ -1,28 +1,18 @@
-# 📁 File Converter
+<p align="center">
+  <img src="assets/banner.png" width="100%">
+</p>
 
-Aplicação desktop desenvolvida em **Python + PyQt6** para conversão de arquivos entre diferentes formatos, com interface gráfica moderna e intuitiva.
+<h1 align="center">📂 File Converter</h1>
 
-## 🚀 Funcionalidades iniciais
+<p align="center">
+  <img src="assets/logo.png" width="180">
+</p>
 
-- Seleção de arquivos por botão ou **Drag & Drop**
-- Conversão entre formatos de documentos e imagens
-- Interface gráfica limpa e profissional
-- Execução de conversões em background (QThread)
-- Logs de status
-- Tratamento de erros
-
-## 🛠️ Tecnologias utilizadas
-
-- Python
-- PyQt6
-- pdf2docx
-- PyMuPDF
-- Pillow
-- reportlab
-
-## 📌 Status do projeto
-
-🚧 Em desenvolvimento  
-Novas funcionalidades e melhorias visuais serão adicionadas em breve.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python">
+  <img src="https://img.shields.io/badge/PyQt6-GUI-green?style=for-the-badge&logo=qt">
+  <img src="https://img.shields.io/badge/Desktop-App-purple?style=for-the-badge">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge">
+</p>
 
 ---
