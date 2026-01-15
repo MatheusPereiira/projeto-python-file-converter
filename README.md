@@ -23,3 +23,10 @@
 Aplicação desktop desenvolvida em **Python + PyQt6** para conversão de arquivos, com foco em **simplicidade, produtividade e organização.**
 
 ---
+
+## 🧩 Visão Geral
+
+O **File Converter** é uma aplicação desktop que permite converter arquivos entre diversos formatos de maneira rápida e intuitiva, utilizando uma interface gráfica moderna e amigável.
+O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização automática dos arquivos convertidos em uma pasta de saída.
+
+---
