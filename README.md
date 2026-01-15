@@ -43,3 +43,17 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 - Sistema de logs
 
 ---
+
+## 🔄 Formatos Suportados
+
+## 📄 Documentos
+- PDF → DOCX  
+- DOCX → PDF  
+
+## 🖼️ Imagens
+- PNG → JPEG  
+- JPEG → PNG  
+- Imagens → PDF  
+- PDF → Imagens  
+
+---
