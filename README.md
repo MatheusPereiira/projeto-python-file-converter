@@ -76,3 +76,15 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 </p>
 
 ---
+
+## 🛠️ Tecnologias Utilizadas
+
+| Categoria | Tecnologia |
+|--------|-----------|
+| Linguagem | Python 3.11+ |
+| Interface Gráfica | PyQt6 |
+| Conversão de Arquivos | Pillow, PyPDF, python-docx |
+| Arquitetura | MVC |
+| Versionamento | Git & GitHub |
+
+---
