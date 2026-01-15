@@ -30,3 +30,16 @@ O **File Converter** é uma aplicação desktop que permite converter arquivos e
 O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização automática dos arquivos convertidos em uma pasta de saída.
 
 ---
+
+## ✅ Funcionalidades
+
+- Conversão entre múltiplos formatos
+- Seleção manual de arquivos
+- Drag & Drop
+- Exibição do tamanho do arquivo selecionado
+- Organização automática na pasta output
+- Status detalhado da conversão
+- Botão para abrir a pasta de saída
+- Sistema de logs
+
+---
