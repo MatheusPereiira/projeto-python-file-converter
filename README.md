@@ -16,3 +16,10 @@
 </p>
 
 ---
+
+## ⚠️ Aviso
+**Status do Projeto:** Em desenvolvimento.
+
+Aplicação desktop desenvolvida em **Python + PyQt6** para conversão de arquivos, com foco em **simplicidade, produtividade e organização.**
+
+---
