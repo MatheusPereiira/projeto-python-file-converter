@@ -57,3 +57,22 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 - PDF → Imagens  
 
 ---
+
+## 🖼️ Capturas de Tela
+
+### 🏠 Tela Principal
+<p align="center">
+  <img src="screenshots/home.png" width="85%">
+</p>
+
+### 🔄 Conversão em Andamento
+<p align="center">
+  <img src="screenshots/conversao.png" width="85%">
+</p>
+
+### ✅ Conversão Finalizada
+<p align="center">
+  <img src="screenshots/sucesso.png" width="85%">
+</p>
+
+---
