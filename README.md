@@ -119,3 +119,19 @@ pip install -r requirements.txt
 python main.py
 ```
 ---
+
+## 📂 Estrutura do Projeto
+```bash
+file_converter/
+├── assets/              # Banner e logo do projeto
+├── converters/          # Módulos de conversão
+├── logs/                # Logs da aplicação
+├── output/              # Arquivos convertidos
+├── screenshots/         # Capturas de tela
+├── ui/                  # Interface gráfica (PyQt6)
+├── utils/               # Utilitários e logger
+├── main.py              # Arquivo principal
+├── requirements.txt
+└── README.md
+```
+---
