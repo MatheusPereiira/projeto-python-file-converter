@@ -88,3 +88,34 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 | Versionamento | Git & GitHub |
 
 ---
+
+# 🚀 Como Executar o Projeto
+
+## 1️⃣ Clonar o repositório
+```bash
+git https://github.com/MatheusPereiira/projeto-python-file-converter.git
+cd file_converter
+```
+## 2️⃣ Crie um ambiente virtual
+```bash
+python -m venv venv
+```
+
+## ▶️ Ativar o ambiente virtual
+```bash
+Windows:
+.\venv\Scripts\activate
+```
+## Linux/macOS:
+```bash
+source venv/bin/activate
+```
+## 3️⃣ Instale as dependências
+```bash
+pip install -r requirements.txt
+```
+## 4️⃣ Execute o programa
+```bash
+python main.py
+```
+---
