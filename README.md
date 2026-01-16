@@ -139,3 +139,11 @@ file_converter/
 Este projeto está sob a **MIT License**, permitindo uso livre para estudo, modificação e distribuição.
 
 ---
+
+## 👤 Autor
+**Matheus Pereira** <br> 
+🎓 Estudante de Engenharia de Software Faculdade de Nova Serrana <br>
+💻 Python | PyQt | Sistemas Desktop <br>
+🔗 GitHub: https://github.com/MatheusPereiira
+
+---
