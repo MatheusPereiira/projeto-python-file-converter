@@ -136,7 +136,7 @@ file_converter/
 ```
 ---
 ##  Licença
-Este projeto está sob a **MIT License**, permitindo uso livre para estudo, modificação e distribuição.
+- Este projeto está sob a **MIT License**, permitindo uso livre para estudo, modificação e distribuição.
 
 ---
 
