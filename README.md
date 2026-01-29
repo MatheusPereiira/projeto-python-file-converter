@@ -2,7 +2,7 @@
   <img src="assets/banner.png" width="100%">
 </p>
 
-<h1 align="center">📂 File Converter</h1>
+<h1 align="center"> File Converter</h1>
 
 <p align="center">
   <img src="assets/logo.png" width="180">
@@ -17,21 +17,21 @@
 
 ---
 
-## ⚠️ Aviso
+##  Aviso
 **Status do Projeto:** Em desenvolvimento.
 
 Aplicação desktop desenvolvida em **Python + PyQt6** para conversão de arquivos, com foco em **simplicidade, produtividade e organização.**
 
 ---
 
-## 🧩 Visão Geral
+##  Visão Geral
 
 O **File Converter** é uma aplicação desktop que permite converter arquivos entre diversos formatos de maneira rápida e intuitiva, utilizando uma interface gráfica moderna e amigável.
 O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização automática dos arquivos convertidos em uma pasta de saída.
 
 ---
 
-## ✅ Funcionalidades
+##  Funcionalidades
 
 - Conversão entre múltiplos formatos
 - Seleção manual de arquivos
@@ -44,13 +44,13 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 
 ---
 
-## 🔄 Formatos Suportados
+##  Formatos Suportados
 
-## 📄 Documentos
+##  Documentos
 - PDF → DOCX  
 - DOCX → PDF  
 
-## 🖼️ Imagens
+##  Imagens
 - PNG → JPEG  
 - JPEG → PNG  
 - Imagens → PDF  
@@ -58,26 +58,26 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 
 ---
 
-## 🖼️ Capturas de Tela
+##  Capturas de Tela
 
-### 🏠 Tela Principal
+###  Tela Principal
 <p align="center">
   <img src="screenshots/home.png" width="85%">
 </p>
 
-### 🔄 Conversão em Andamento
+###  Conversão em Andamento
 <p align="center">
   <img src="screenshots/conversao.png" width="85%">
 </p>
 
-### ✅ Conversão Finalizada
+###  Conversão Finalizada
 <p align="center">
   <img src="screenshots/sucesso.png" width="85%">
 </p>
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 | Categoria | Tecnologia |
 |--------|-----------|
@@ -89,19 +89,19 @@ O sistema suporta **Drag & Drop**, seleção manual de arquivos e organização 
 
 ---
 
-# 🚀 Como Executar o Projeto
+#  Como Executar o Projeto
 
-## 1️⃣ Clonar o repositório
+##  Clonar o repositório
 ```bash
 git https://github.com/MatheusPereiira/projeto-python-file-converter.git
 cd file_converter
 ```
-## 2️⃣ Crie um ambiente virtual
+##  Crie um ambiente virtual
 ```bash
 python -m venv venv
 ```
 
-## ▶️ Ativar o ambiente virtual
+##  Ativar o ambiente virtual
 ```bash
 Windows:
 .\venv\Scripts\activate
@@ -110,17 +110,17 @@ Windows:
 ```bash
 source venv/bin/activate
 ```
-## 3️⃣ Instale as dependências
+##  Instale as dependências
 ```bash
 pip install -r requirements.txt
 ```
-## 4️⃣ Execute o programa
+##  Execute o programa
 ```bash
 python main.py
 ```
 ---
 
-## 📂 Estrutura do Projeto
+##  Estrutura do Projeto
 ```bash
 file_converter/
 ├── assets/              # Banner e logo do projeto
@@ -135,15 +135,15 @@ file_converter/
 └── README.md
 ```
 ---
-## 📄 Licença
+##  Licença
 Este projeto está sob a **MIT License**, permitindo uso livre para estudo, modificação e distribuição.
 
 ---
 
-## 👤 Autor
+##  Autor
 **Matheus Pereira** <br> 
-🎓 Estudante de Engenharia de Software Faculdade de Nova Serrana <br>
-💻 Python | PyQt | Sistemas Desktop <br>
-🔗 GitHub: https://github.com/MatheusPereiira
+- Estudante de Engenharia de Software Faculdade de Nova Serrana <br>
+- Python | PyQt | Sistemas Desktop <br>
+- GitHub: https://github.com/MatheusPereiira
 
 ---
